@@ -1,1 +1,171 @@
 /* You can add global styles to this file, and also import other style files */
+@import '../node_modules/bootstrap/dist/css/bootstrap.min.css';
+
+/* .wsr-standard-button {
+    /* background: #00b9f5 !important;
+    color: white !important;
+    border: 1px solid #00b9f5 !important; 
+} */
+
+body {
+  overflow-y: hidden;
+  overflow-x: scroll;
+  width: 800px;
+  height: 600px;
+}
+
+.wsr-button-highlight-hover {
+  background: white !important;
+  color: #00b9f5 !important;  
+  border: 1px solid #00b9f5 !important;
+}
+
+.wsr-button-highlight-hover:hover {
+  background: #00b9f5 !important;
+  color: white !important;
+  border: 1px solid #00b9f5 !important;
+}
+
+.wsr-dropbtn {
+  height: 36px;
+  border: 1px solid #ccc;
+  padding: 6px 8px;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+/* The container <div> - needed to position the dropdown content */
+.wsr-dropdown {
+  position: relative;
+  max-width: 428px;
+  margin: auto;
+}
+
+/* Dropdown Content (Hidden by Default) */
+.wsr-dropdown-content {
+  display: none;
+  position: absolute;
+  background-color: #f9f9f9;
+  width: 100%;
+  box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
+  z-index: 1;
+}
+
+/* Links inside the dropdown */
+.wsr-dropdown-content a {
+  color: black;
+  padding: 12px 16px;
+  text-decoration: none;
+  display: block;
+}
+
+/* Change color of dropdown links on hover */
+.wsr-dropdown-content a:hover {
+  background-color: #f1f1f1
+}
+
+/* Show the dropdown menu on hover */
+.wsr-dropdown:hover .wsr-dropdown-content {
+  display: block;
+  cursor: pointer;
+}
+
+/* custom scroll-bar */
+/* width */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+  background: #f1f1f1;
+  border-radius: 6px;
+
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background: #888;
+  border-radius: 6px;
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+  background: #555;
+}
+
+/* common classes */
+
+.wsr-dropdown-caret-down {
+  position: absolute;
+  font-size: 24px;
+  top: 0px;
+  right: 8px;
+}
+
+.cursor-pointer {
+  cursor: pointer;
+}
+
+.wsr-text-medium {
+  font-size: 13px !important;
+  color: rgba(0, 0, 0, .6) !important;
+  font-weight: 400 !important;
+}
+
+.wsr-text-sub-header {
+  font-size: 16px !important;
+  color: rgba(0, 0, 0) !important;
+  font-weight: 600 !important;
+}
+
+.wsr-bottom-xxs-spacer {
+  margin-bottom: 8px !important;
+}
+
+.wsr-bottom-xxx-spacer {
+  margin-bottom: 24px !important;
+}
+
+.wsr-border-radius-none {
+  border-radius: 0px !important;
+}
+
+.wsr-button-submit {
+  line-height: 15px !important;
+  padding: 8px 11px !important;
+  width: 120px;
+  font-size: 14px !important;
+  background-color: #333333 !important;
+  color: white !important;
+  font-weight: 600 !important;
+  border-radius: 0 !important;
+  border: 2px solid #333333 !important;
+}
+
+.wsr-button-cancel {
+  line-height: 15px !important;
+  padding: 8px 11px !important;
+  width: 120px;
+  font-size: 14px !important;
+  font-weight: 600 !important;
+  border-radius: 0 !important;
+  border: 2px solid #333333 !important;
+}
+
+.wsr-button-cancel:hover {
+  border-color: #666 !important;
+}
+
+.wsr-button-submit:hover {
+  border-color: #ffffff !important;
+}
+
+.margin-right-xxs {
+  margin-right: 12px !important;
+}
+
+a {
+  color: #004578;
+  text-decoration: underline;
+}

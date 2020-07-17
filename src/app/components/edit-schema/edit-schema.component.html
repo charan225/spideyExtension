@@ -1,0 +1,487 @@
+<div class="row col-sm-12 pt-2 bg bg-dark" style="width: 100%;">
+  <div class="col-sm-4 pt-2" style="width: 100%;">
+    <span type="button" style="float: left;" class="text text-light" disabled>Login</span></div>
+  <div class="col-sm-4" style="width: 100%;">
+    <h2 class="text text-light">Dataextractor.io</h2>
+  </div>
+  <div class="col-sm-4"></div>
+</div>
+<div>
+
+  <div class="container-fluid job-schema-container" style="z-index: 1;">
+    <div class="row" style="margin: 0px;">
+      <div class="col-md-3 col-sm-3 col-lg-3" style="padding: 0px;">
+        <div class="list-group-container">
+          <div class="wsr-collection-button-div" *ngIf="!hideNewSchemaButton">
+            <button type="button" (click)="createNewSchema()" disabled
+              class="btn btn-primary wsr-collection-button wsr-standard-button">
+              <i class="fa fa-plus" aria-hidden="true"></i> New Schema
+            </button>
+          </div>
+          <div *ngIf="hideNewSchemaButton" style=" margin-top: 12px;">
+            <button type="button" disabled (click)="createNewSchema()"
+              class="btn btn-primary wsr-schema-newSchemaListHeader">
+              New Schema
+            </button>
+          </div>
+          <div class="list-group">
+            <a href="#" id="available_schemas" *ngIf="available_schemas"
+              class="list-group-item list-group-item-action list-group-item-header">
+              Available Schemas
+            </a>
+            <ul class="parent-ul" *ngIf='this.schemaData'>
+              <li tabindex='0' class="list-group-item list-group-item-action list-group-items"
+                (click)="showSchemaData($j)" (mouseenter)="itemOnHover($j)" (mouseleave)="itemOnLeave()"
+                *ngFor="let  post of schemaData.data.schemas; let $j = index">
+                <div class="list-items-name">{{post.name}}</div>
+                <div *ngIf="$j === actualIndex" class="">
+                  <p class="" *ngFor="let item of post.columns; let i = index">
+                    {{item}}
+                  </p>
+                </div>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-md-9 col-sm-9 col-lg-9">
+        <div *ngIf="showLoader()">
+          <app-loader></app-loader>
+        </div>
+        <div id="schemasAvailable">
+          <div class="wsr-editSchema-shemaData" *ngIf="showTableCheck()">
+            <div class="table-responsive-sm wsr-selected-url-table">
+              <table class="table table-sm">
+                <thead style="background-color: #007bff; color: white;">
+                  <tr>
+                    <th *ngFor="let key of keys">{{key}}</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let data of showSchemaObj.data ; let k = index">
+                    <td *ngFor="let val of keys">{{data[val]}}</td>
+                  </tr>
+                </tbody>
+              </table>
+
+            </div>
+
+            <button style="width: 90px; height: 40px; border: none; background-color: #007bff;" type="button" disabled
+              class="btn btn-primary wsr-schema-newSchemaListHeader">
+              Download
+            </button>
+          </div>
+        </div>
+
+        <div *ngIf="showFRE()">
+          <app-first-review-experience [displayText]="displayText" [displayImage]="displayImage">
+          </app-first-review-experience>
+        </div>
+
+        <!-- New schema -->
+        <div class="wsr-editSchema-new_schema" *ngIf="showNewSchemaWindow" style="padding:24px">
+          <div class="preference-container">
+            <div class="row profile-preferences-card profile-preferences-card-header">
+              <header class="square-header filtered spacer-sm-bottom" style="margin-bottom: 0 !important;">
+                <span class="innerTitleText-font" data-l10n="">Complete your account contactability preferences</span>
+              </header>
+              <div class="profile-preferences-card-sub-text" style="margin-top:16px;width:80%;float:left">
+                !UA this information will help us connect with the most appropriate information.
+              </div>
+
+            </div>
+            <div class="row profile-preferences-card" style="padding-top:0px;">
+              <div class="col-lg-12" style="padding:0px">
+                <div class="row profile-preferences-card" style="margin-bottom:0px;padding:0;box-shadow: none;">
+                  <div class="profile-list-container profile-preferences-card-list-container">
+                    <ul class="profile-preferences-header-list-items"
+                      style="display:flex;padding-left: 0px;margin-bottom: 24px;">
+                      <li (click)="onPrefStatusTabClick()"
+                        [ngClass]="{'profile-preferences-active-tab':prefStatusTabActive}">
+                        <div>
+                          Status/tasks
+                        </div>
+                      </li>
+                      <li (click)="onPrefMicrosoftTabClick()"
+                        [ngClass]="{'profile-preferences-active-tab':prefMicrosoftTabActive}">
+                        <div>
+                          Columns
+                        </div>
+                      </li>
+                      <!-- <li (click)="handleDetailCreateSchemaClick()"
+                      [ngClass]="{'profile-preferences-active-tab':prefPartnersTabActive}">
+                      <div>
+                        Partners
+                      </div>
+                    </li> -->
+                      <li [ngClass]="{'profile-preferences-active-tab':prefPartnersTabActive}">
+                        <div>
+                          Partners
+                        </div>
+                      </li>
+                      <li (click)="onPrefCustomersTabClick()"
+                        [ngClass]="{'profile-preferences-active-tab':prefCustomersTabActive}">
+                        <div>
+                          Customers
+                        </div>
+                      </li>
+                    </ul>
+                  </div>
+
+                  <div class="col-lg-12 profile-card-status-window" *ngIf="prefStatusTabActive" style="padding:0px">
+                    <div class="row profile-preferences-card" style="padding:0px;box-shadow:none;">
+                      <div class="col-lg-12 col-md-12 col-xs-12 " style="padding-left:0px">
+                        <div class="profile-card-status-window-sub_card">
+                          <div class="form-check">
+                            <input class="form-check-input" type="radio" name="exampleRadios" id="exampleRadios1"
+                              value="option1" checked>
+                            <label class="form-check-label" for="exampleRadios1">
+                              Detail
+                            </label>
+                          </div>
+                          <div class="form-check">
+                            <input class="form-check-input" type="radio" name="exampleRadios" id="exampleRadios2"
+                              value="option2">
+                            <label class="form-check-label" for="exampleRadios2">
+                              List
+                            </label>
+                          </div>
+
+                        </div>
+
+                      </div>
+
+                    </div>
+                    <div class="row">
+                      <div class="col-lg-12" style="margin-top: 24px;">
+                        <div>
+                          <!-- <button class="wsr-button-submit" (click)="onPrefMicrosoftTabClick()">
+                          Save & Next
+                        </button> -->
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-lg-12 profile-card-status-window" *ngIf="prefMicrosoftTabActive" style="padding:0px">
+                    <div class="row profile-preferences-card"
+                      style="background: #F4F4F4;margin-bottom:0px;padding-top:12px">
+                      <div class="col-lg-12 col-md-12 col-xs-12 " style="padding-left:0px;margin-bottom:12px">
+                        <div>
+                          <span class="profile-preferences-card-small_text" style="font-size:16px">Select columns to
+                            create your own Schema</span>
+
+                        </div>
+                      </div>
+                      <div class="col-lg-4 col-md-6 col-xs-12 " style="padding-left:0px">
+                        <div>
+
+                          <div style="margin-top:12px;">
+                            <span class="profile-preferences-card-small_text">Key</span>
+                            <div style="margin-top:12px;">
+                              <input type="email" [(ngModel)]="columnKey"
+                                style="width:250px;height:36px;background: #FFFFFF;border: 1px solid rgba(0, 0, 0, 0.4);box-sizing: border-box;" />
+                            </div>
+                          </div>
+                        </div>
+
+                      </div>
+                      <div class="col-lg-4 col-md-6 col-xs-12" style="padding-left:0px">
+                        <div>
+                          <div style="margin-top:12px;">
+                            <span class="profile-preferences-card-small_text">Value</span>
+                            <div style="margin-top:12px;">
+                              <input type="text" [(ngModel)]="columnValue"
+                                style="width:250px;height:36px;background: #FFFFFF;border: 1px solid rgba(0, 0, 0, 0.4);box-sizing: border-box;" />
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="col-lg-4 col-md-6 col-xs-12" style="padding-left:0px">
+                        <div style="margin-top:12px;float: left;margin-right: 24px;">
+                          <span class="profile-preferences-card-small_text">Type</span>
+                          <div style="margin-top:12px;">
+                            <div class="wsr-dropdown profile-preferences-card-dropdown">
+                              <button id="frequencyDropdown" class="btn btn-dropdown no-outline wsr-dropbtn"
+                                type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"
+                                style="width:120px;height: 36px;" role="button">
+                                <span style="float:left">
+                                  {{selectedColumnType}}
+                                </span>
+                                <span class="caret" style="float:right;"></span>
+                              </button>
+
+                              <ul class="dropdown-menu wsr-dropdown-content" role="menu"
+                                aria-labelledby="frequencyDropdown" style="width:120px">
+                                <li class="active" *ngFor="let type of columnTypes" (click)="selectType(type)"
+                                  value="Url"><a>{{type}}</a></li>
+                              </ul>
+                            </div>
+                          </div>
+
+                        </div>
+                        <div style="margin-top:46px">
+                          <button type="button" class="btn btn-primary wsr-standard-button">Add</button>
+                          <!-- <button type="button" (click)="addColumnToList()"
+                          class="btn btn-primary wsr-standard-button">Add</button> -->
+                        </div>
+                      </div>
+
+                      <div class="col-lg-12 col-md-12 col-xs-12 " style="padding-left:0px;margin-top:24px">
+                        <!-- <div *ngIf="columnsArray.length > 0">
+                        <table class="table table-sm" style="background: #ffffff;">
+                          <thead style="background: #006CD8;
+                                                color: white;">
+                            <tr>
+                              <th scope="col">#</th>
+                              <th scope="col">Key</th>
+                              <th scope="col">Value</th>
+                              <th scope="col">Type</th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            <tr *ngFor="let column of columnsArray; let i = index">
+                              <th scope="row">{{i+1}}</th>
+                              <td>{{column.key}}</td>
+                              <td>{{column.value}}</td>
+                              <td>{{column.type}}</td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div> -->
+                      </div>
+                    </div>
+
+                    <div class="row" style="margin:24px 0px 0px 0px;">
+                      <div class="col-lg-12" style="padding:0px">
+                        <div>
+                          <!-- <button class="profile-preferences-save-button hello1"
+                          (click)="handleDetailCreateSchemaClick()">
+                          Save & Next
+                        </button> -->
+                          <!-- <button class="profile-preferences-save-button hello1">
+                          Save & Next
+                        </button> -->
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-lg-12 profile-card-status-window" *ngIf="prefPartnersTabActive" style="padding:0px">
+                    <div class="row profile-preferences-card"
+                      style="background: none;box-shadow: none;margin-bottom:0px">
+                      <div class="col-lg-12 col-md-12 col-xs-12 " style="padding-left:0px;margin-bottom:12px">
+                        <div>
+                          <span class="profile-preferences-card-small_text" style="font-size:16px">I want to be
+                            contacted
+                            by partners with the below profile</span>
+
+                        </div>
+                      </div>
+                      <div class="col-lg-4 col-md-6 col-xs-12 " style="padding-left:0px">
+                        <div style="display: flex;flex-direction: column;">
+                          <span class="profile-preferences-card-small_text">Organization type</span>
+                          <div style="margin-top:12px;">
+                            <div ng-repeat="role in organizaionType" class="profile-card-profile-window-role-badges">
+                              <!-- {{role}} -->
+                            </div>
+                          </div>
+                          <div style="margin-top:12px;">
+                            <span class="profile-preferences-card-small_text">Counties they operate</span>
+                            <div style="margin-top:12px;">
+                              <div ng-repeat="role in countriesOperatedByPartners"
+                                class="profile-card-profile-window-role-badges">
+                                <!-- {{role}} -->
+                              </div>
+                            </div>
+                          </div>
+                          <div style="margin-top:12px;">
+                            <div class="dropdown profile-preferences-card-dropdown">
+                              <button id="operatedCountriesDropdown" class="btn btn-dropdown no-outline" type="button"
+                                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" role="button">
+                                <span style="float:left">
+                                  Other
+                                </span>
+                                <span class="caret" style="float:right;"></span>
+                              </button>
+
+                              <ul class="dropdown-menu" role="menu" aria-labelledby="operatedCountriesDropdown"
+                                style="width: 250px;">
+                                <li class="active"><a href="#">India</a></li>
+                                <li><a href="#">China</a></li>
+                                <li><a href="#">France</a></li>
+                              </ul>
+                            </div>
+                          </div>
+                          <div style="margin-top:12px;">
+                            <span class="profile-preferences-card-small_text">Organization size</span>
+                            <div style="margin-top:12px">
+                              <div ng-repeat="role in partnersOrgSize" class="profile-card-profile-window-role-badges">
+                                <!-- {{role}} -->
+                              </div>
+                            </div>
+                          </div>
+
+                        </div>
+
+                      </div>
+                      <div class="col-lg-4 col-md-6 col-xs-12" style="padding-left:0px">
+                        <div style="position:relative;">
+                          <span class="profile-preferences-card-small_text">Solution areas</span>
+                          <div style="margin-top:12px">
+                            <div ng-repeat="role in partnerSolAreas" class="profile-card-profile-window-role-badges">
+                              <!-- {{role}} -->
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="col-lg-4 col-md-6 col-xs-12" style="padding-left:0px">
+                        <div style="position:relative;">
+                          <span class="profile-preferences-card-small_text">Industries</span>
+                          <div style="margin-top:12px">
+                            <div ng-repeat="role in partnerIndustries" class="profile-card-profile-window-role-badges">
+                              <!-- {{role}} -->
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div class="row" style="margin:0px;">
+                      <div class="col-lg-12">
+                        <div>
+                          <!-- <button class="profile-preferences-save-button hello2" (click)="onPrefCustomersTabClick()">
+                          Save & Next
+                        </button> -->
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-lg-12 profile-card-status-window" *ngIf="prefCustomersTabActive" style="padding:0px">
+                    <div class="row profile-preferences-card"
+                      style="background: none;box-shadow: none;margin-bottom:0px">
+                      <div class="col-lg-12 col-md-12 col-xs-12 " style="padding:0px;">
+                        <div style="margin-bottom:12px;">
+                          <span class="profile-preferences-card-small_text" style="font-size:16px;">I want to be
+                            contacted
+                            by customers with the below profile</span>
+                        </div>
+                      </div>
+                      <div class="col-lg-4 col-md-6 col-xs-12 " style="padding-left:0px">
+                        <div style="display:flex;flex-direction:column;">
+                          <div>
+                            <span class="profile-preferences-card-small_text">Countries they operate</span>
+                            <div style="margin-top:12px">
+                              <div ng-repeat="role in countriesOperatedByPartners"
+                                class="profile-card-profile-window-role-badges">
+                                <!-- {{role}} -->
+                              </div>
+                            </div>
+                          </div>
+                          <div style="margin-top:12px;">
+                            <div class="dropdown profile-preferences-card-dropdown">
+                              <button id="operatedCountriesDropdown" class="btn btn-dropdown no-outline" type="button"
+                                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" role="button">
+                                <span style="float:left;color: rgba(0, 0, 0, 0.4);">
+                                  Other
+                                </span>
+                                <span class="caret" style="float:right;"></span>
+                              </button>
+
+                              <ul class="dropdown-menu" role="menu" aria-labelledby="operatedCountriesDropdown"
+                                style="width: 250px;">
+                                <li class="active"><a href="#">India</a></li>
+                                <li><a href="#">China</a></li>
+                                <li><a href="#">France</a></li>
+                              </ul>
+                            </div>
+                          </div>
+                          <div style="margin-top:12px;">
+                            <span class="profile-preferences-card-small_text">Organization size</span>
+                            <div style="margin-top:12px">
+                              <div ng-repeat="role in partnersOrgSize" class="profile-card-profile-window-role-badges">
+                                <!-- {{role}} -->
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+
+                      </div>
+                      <div class="col-lg-4 col-md-6 col-xs-12" style="padding-left:0px">
+                        <div style="position:relative;display:flex;flex-direction:column">
+                          <span class="profile-preferences-card-small_text">Solution areas</span>
+                          <div style="margin-top:12px">
+                            <div ng-repeat="role in partnerSolAreas" class="profile-card-profile-window-role-badges">
+                              <!-- {{role}} -->
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="col-lg-4 col-md-6 col-xs-12" style="padding-left:0px">
+                        <div style="position:relative;">
+                          <span class="profile-preferences-card-small_text">Industries</span>
+                          <div style="margin-top:12px">
+                            <div ng-repeat="role in partnerIndustries" class="profile-card-profile-window-role-badges">
+                              <!-- {{role}} -->
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div class="row" style="margin:0px">
+                      <div class="col-lg-12">
+                        <div>
+                          <!-- <button class="profile-preferences-save-button hello3">
+                          Save & Next
+                        </button> -->
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- Modal -->
+<div class="modal fade" id="schemaModal" tabindex="-1" role="dialog" aria-labelledby="schemaModalLabel"
+  aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="schemaModalLabel">Add urls to collection</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="col-xs-24">
+          <div class="wsr-text-medium  wsr-schema-add-collection-label wsr-bottom-xxs-spacer">
+            Select collection
+          </div>
+          <div class="wsr-dropdown">
+            <div class="wsr-dropbtn" style="display: flex;">
+              <div>
+                {{selectedCollNameToAddUrls}}
+              </div>
+              <div class="wsr-dropdown-caret-down">
+                <i class="fa fa-angle-down" aria-hidden="true"></i>
+              </div>
+            </div>
+            <div class="wsr-dropdown-content">
+              <a *ngFor="let collection of finalCollectionList" (click)="selectColl(collection)">{{collection.name}}</a>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary">Save changes</button>
+      </div>
+    </div>
+  </div>
+</div>
