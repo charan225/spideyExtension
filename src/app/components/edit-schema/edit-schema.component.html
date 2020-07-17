@@ -78,6 +78,10 @@
           <app-first-review-experience [displayText]="displayText" [displayImage]="displayImage">
           </app-first-review-experience>
         </div>
+        <div *ngIf="availableSchemaFailed">
+          <app-error-banner [displayErrorText]="displayErrorText" [links]="links">
+          </app-error-banner>
+        </div>
 
         <!-- New schema -->
         <div class="wsr-editSchema-new_schema" *ngIf="showNewSchemaWindow" style="padding:24px">

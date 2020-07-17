@@ -37,54 +37,65 @@ export class EditSchemaComponent implements OnInit {
 
   displayText: any;
   displayImage: any;
+  displayErrorText: any;
+
   available_schemas: any;
+  availableSchemaFailed: any;
+  links: any;
 
   urlLink: any;
   constructor(private jobDetailsService: JobDetailsService) {}
   loader: any;
 
   ngOnInit() {
-    this.displayText = "No Schema available";
+    this.displayText = "No schemas available for this page. Please try creating new schemas.";
     this.displayImage = "../../../assets/noSchema.png";
+
+    this.displayErrorText =
+      "We ran into a problem and couldn't load your schema. Please try again.";
+    this.links =["Learn more", "Support"];
 
     this.loader = true;
     this.noSchemasAvailable = false;
     this.available_schemas = true;
+    this.availableSchemaFailed = false;
 
     // // For extension
-    chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
-      this.urlLink = tabs[0].url;
-      console.log("URL ", this.urlLink);
+    // chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
+    //   this.urlLink = tabs[0].url;
+    //   console.log("URL ", this.urlLink);
 
-      this.jobDetailsService.getAvSchemas(this.urlLink).subscribe(
-        (post: any) => {
-          let jobStatusId = post;
-          let job_id = {
-            job_id: jobStatusId.job_id,
-          };
-          console.log("avg schemas 7", post);
-          this.startSchemaJob(job_id);
-        },
-        (error: any) => {
-          console.log("Available Schema Failed");
-        }
-      );
-    });
+    //   this.jobDetailsService.getAvSchemas(this.urlLink).subscribe(
+    //     (post: any) => {
+    //       let jobStatusId = post;
+    //       let job_id = {
+    //         job_id: jobStatusId.job_id,
+    //       };
+    //       console.log("avg schemas 7", post);
+    //       this.startSchemaJob(job_id);
+    //     },
+    //     (error: any) => {
+    //       console.log("Available Schema Failed");
+    //     }
+    //   );
+    // });
 
     // // For localhost
-    // this.jobDetailsService.getAvSchemas().subscribe(
-    //   (post: any) => {
-    //     let jobStatusId = post;
-    //     let job_id = {
-    //       job_id: jobStatusId.job_id,
-    //     };
-    //     console.log("avg schemas 7", post);
-    //     this.startSchemaJob(job_id);
-    //   },
-    //   (error: any) => {
-    //     console.log("Available Schema Failed");
-    //   }
-    // );
+    this.jobDetailsService.getAvSchemas().subscribe(
+      (post: any) => {
+        let jobStatusId = post;
+        let job_id = {
+          job_id: jobStatusId.job_id,
+        };
+        console.log("avg schemas 7", post);
+        this.startSchemaJob(job_id);
+      },
+      (error: any) => {
+        console.log("Available Schema Failed");
+        this.loader = false;
+        this.availableSchemaFailed = true;
+      }
+    );
   }
 
   startSchemaJob = (job_id) => {

@@ -7,13 +7,15 @@ import { EditSchemaComponent } from './components/edit-schema/edit-schema.compon
 import { FormsModule } from '@angular/forms';
 import { LoaderComponent } from './components/loader/loader.component';
 import { FirstReviewExperienceComponent } from './components/first-review-experience/first-review-experience.component';
+import { ErrorBannerComponent } from './components/error-banner/error-banner.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     EditSchemaComponent,
     LoaderComponent,
-    FirstReviewExperienceComponent
+    FirstReviewExperienceComponent,
+    ErrorBannerComponent
   ],
   imports: [
     BrowserModule,
