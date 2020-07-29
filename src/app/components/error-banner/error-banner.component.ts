@@ -6,11 +6,12 @@ import { Component, OnInit, Input } from "@angular/core";
   styleUrls: ["./error-banner.component.css"],
 })
 export class ErrorBannerComponent implements OnInit {
+  
   @Input("displayErrorText") displayErrorText: string;
   @Input("links") links: any;
+
   constructor() {}
 
   ngOnInit(): void {
-    console.log("Display text", this.displayErrorText);
   }
 }

@@ -4,7 +4,7 @@
 
 export const environment = {
   production: false,
-  url: 'http://ec2-204-236-240-3.compute-1.amazonaws.com:8000' 
+  url: 'http://ec2-204-236-240-3.compute-1.amazonaws.com:8000'
 };
 /*
  * For easier debugging in development mode, you can import the following file

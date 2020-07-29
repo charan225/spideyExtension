@@ -23,34 +23,14 @@ export class JobDetailsService {
 
   constructor(private http: HttpClient, private router: Router) {
     this.currentUrl = environment.url;
-    console.log("current Api url", this.currentUrl);
   }
 
-  // // For extension
-  // getAvSchemas(urlLink){
-  //   console.log("avg schemas 1");
-  //   console.log('available url', urlLink);
-
-  //   let urlObj: object = {};
-  //   urlObj['url'] = urlLink;
-  //   this.jsonUrl = JSON.stringify(urlObj) ;
-
-  //   return this.http.post(this.currentUrl + '/app/coreapi/getvalidschemas/',JSON.parse(this.jsonUrl))
-  // }
-
-  // // For Localhost
-  getAvSchemas() {
-    console.log("avg schemas 1");
+  getAvSchemas(urlLink) {
     let urlObj: object = {};
-
-    // urlObj["url"] = "https://www.riverisland.com/c/men/shirts";
-    urlObj["url"] = "https://www.flipkart.com/";
+    urlObj['url'] = urlLink;
     this.jsonUrl = JSON.stringify(urlObj);
 
-    return this.http.post(
-      this.currentUrl + "/app/coreapi/getvalidschemas/",
-      JSON.parse(this.jsonUrl)
-    );
+    return this.http.post(this.currentUrl + '/app/coreapi/getvalidschemas/', JSON.parse(this.jsonUrl))
   }
 
   startSchemaJob(job_id) {

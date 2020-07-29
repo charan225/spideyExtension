@@ -13,13 +13,13 @@
       <div class="col-md-3 col-sm-3 col-lg-3" style="padding: 0px;">
         <div class="list-group-container">
           <div class="wsr-collection-button-div" *ngIf="!hideNewSchemaButton">
-            <button type="button" (click)="createNewSchema()" disabled
+            <button type="button" (click)="createNewSchema()" disabled style="font-size: 14px;"
               class="btn btn-primary wsr-collection-button wsr-standard-button">
               <i class="fa fa-plus" aria-hidden="true"></i> New Schema
             </button>
           </div>
           <div *ngIf="hideNewSchemaButton" style=" margin-top: 12px;">
-            <button type="button" disabled (click)="createNewSchema()"
+            <button type="button" disabled (click)="createNewSchema()" style="font-size: 14px;"
               class="btn btn-primary wsr-schema-newSchemaListHeader">
               New Schema
             </button>
@@ -46,11 +46,11 @@
       </div>
 
       <div class="col-md-9 col-sm-9 col-lg-9">
-        <div *ngIf="showLoader()">
+        <div *ngIf="loader">
           <app-loader></app-loader>
         </div>
         <div id="schemasAvailable">
-          <div class="wsr-editSchema-shemaData" *ngIf="showTableCheck()">
+          <div class="wsr-editSchema-shemaData" *ngIf="showTable">
             <div class="table-responsive-sm wsr-selected-url-table">
               <table class="table table-sm">
                 <thead style="background-color: #007bff; color: white;">
@@ -74,9 +74,9 @@
           </div>
         </div>
 
-        <div *ngIf="showFRE()">
-          <app-first-review-experience [displayText]="displayText" [displayImage]="displayImage">
-          </app-first-review-experience>
+        <div *ngIf="noSchemasAvailable">
+          <app-first-run-experience [displayText]="displayText" [displayImage]="displayImage">
+          </app-first-run-experience>
         </div>
         <div *ngIf="availableSchemaFailed">
           <app-error-banner [displayErrorText]="displayErrorText" [links]="links">
@@ -113,12 +113,6 @@
                           Columns
                         </div>
                       </li>
-                      <!-- <li (click)="handleDetailCreateSchemaClick()"
-                      [ngClass]="{'profile-preferences-active-tab':prefPartnersTabActive}">
-                      <div>
-                        Partners
-                      </div>
-                    </li> -->
                       <li [ngClass]="{'profile-preferences-active-tab':prefPartnersTabActive}">
                         <div>
                           Partners
@@ -160,9 +154,6 @@
                     <div class="row">
                       <div class="col-lg-12" style="margin-top: 24px;">
                         <div>
-                          <!-- <button class="wsr-button-submit" (click)="onPrefMicrosoftTabClick()">
-                          Save & Next
-                        </button> -->
                         </div>
                       </div>
                     </div>
@@ -226,46 +217,16 @@
                         </div>
                         <div style="margin-top:46px">
                           <button type="button" class="btn btn-primary wsr-standard-button">Add</button>
-                          <!-- <button type="button" (click)="addColumnToList()"
-                          class="btn btn-primary wsr-standard-button">Add</button> -->
                         </div>
                       </div>
 
                       <div class="col-lg-12 col-md-12 col-xs-12 " style="padding-left:0px;margin-top:24px">
-                        <!-- <div *ngIf="columnsArray.length > 0">
-                        <table class="table table-sm" style="background: #ffffff;">
-                          <thead style="background: #006CD8;
-                                                color: white;">
-                            <tr>
-                              <th scope="col">#</th>
-                              <th scope="col">Key</th>
-                              <th scope="col">Value</th>
-                              <th scope="col">Type</th>
-                            </tr>
-                          </thead>
-                          <tbody>
-                            <tr *ngFor="let column of columnsArray; let i = index">
-                              <th scope="row">{{i+1}}</th>
-                              <td>{{column.key}}</td>
-                              <td>{{column.value}}</td>
-                              <td>{{column.type}}</td>
-                            </tr>
-                          </tbody>
-                        </table>
-                      </div> -->
                       </div>
                     </div>
 
                     <div class="row" style="margin:24px 0px 0px 0px;">
                       <div class="col-lg-12" style="padding:0px">
                         <div>
-                          <!-- <button class="profile-preferences-save-button hello1"
-                          (click)="handleDetailCreateSchemaClick()">
-                          Save & Next
-                        </button> -->
-                          <!-- <button class="profile-preferences-save-button hello1">
-                          Save & Next
-                        </button> -->
                         </div>
                       </div>
                     </div>
@@ -286,7 +247,6 @@
                           <span class="profile-preferences-card-small_text">Organization type</span>
                           <div style="margin-top:12px;">
                             <div ng-repeat="role in organizaionType" class="profile-card-profile-window-role-badges">
-                              <!-- {{role}} -->
                             </div>
                           </div>
                           <div style="margin-top:12px;">
@@ -294,7 +254,6 @@
                             <div style="margin-top:12px;">
                               <div ng-repeat="role in countriesOperatedByPartners"
                                 class="profile-card-profile-window-role-badges">
-                                <!-- {{role}} -->
                               </div>
                             </div>
                           </div>
@@ -320,7 +279,6 @@
                             <span class="profile-preferences-card-small_text">Organization size</span>
                             <div style="margin-top:12px">
                               <div ng-repeat="role in partnersOrgSize" class="profile-card-profile-window-role-badges">
-                                <!-- {{role}} -->
                               </div>
                             </div>
                           </div>
@@ -333,7 +291,6 @@
                           <span class="profile-preferences-card-small_text">Solution areas</span>
                           <div style="margin-top:12px">
                             <div ng-repeat="role in partnerSolAreas" class="profile-card-profile-window-role-badges">
-                              <!-- {{role}} -->
                             </div>
                           </div>
                         </div>
@@ -343,7 +300,6 @@
                           <span class="profile-preferences-card-small_text">Industries</span>
                           <div style="margin-top:12px">
                             <div ng-repeat="role in partnerIndustries" class="profile-card-profile-window-role-badges">
-                              <!-- {{role}} -->
                             </div>
                           </div>
                         </div>
@@ -353,9 +309,6 @@
                     <div class="row" style="margin:0px;">
                       <div class="col-lg-12">
                         <div>
-                          <!-- <button class="profile-preferences-save-button hello2" (click)="onPrefCustomersTabClick()">
-                          Save & Next
-                        </button> -->
                         </div>
                       </div>
                     </div>
@@ -377,7 +330,6 @@
                             <div style="margin-top:12px">
                               <div ng-repeat="role in countriesOperatedByPartners"
                                 class="profile-card-profile-window-role-badges">
-                                <!-- {{role}} -->
                               </div>
                             </div>
                           </div>
@@ -403,7 +355,6 @@
                             <span class="profile-preferences-card-small_text">Organization size</span>
                             <div style="margin-top:12px">
                               <div ng-repeat="role in partnersOrgSize" class="profile-card-profile-window-role-badges">
-                                <!-- {{role}} -->
                               </div>
                             </div>
                           </div>
@@ -415,7 +366,6 @@
                           <span class="profile-preferences-card-small_text">Solution areas</span>
                           <div style="margin-top:12px">
                             <div ng-repeat="role in partnerSolAreas" class="profile-card-profile-window-role-badges">
-                              <!-- {{role}} -->
                             </div>
                           </div>
                         </div>
@@ -425,7 +375,6 @@
                           <span class="profile-preferences-card-small_text">Industries</span>
                           <div style="margin-top:12px">
                             <div ng-repeat="role in partnerIndustries" class="profile-card-profile-window-role-badges">
-                              <!-- {{role}} -->
                             </div>
                           </div>
                         </div>
@@ -435,9 +384,6 @@
                     <div class="row" style="margin:0px">
                       <div class="col-lg-12">
                         <div>
-                          <!-- <button class="profile-preferences-save-button hello3">
-                          Save & Next
-                        </button> -->
                         </div>
                       </div>
                     </div>

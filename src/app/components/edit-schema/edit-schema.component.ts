@@ -44,7 +44,7 @@ export class EditSchemaComponent implements OnInit {
   links: any;
 
   urlLink: any;
-  constructor(private jobDetailsService: JobDetailsService) {}
+  constructor(private jobDetailsService: JobDetailsService) { }
   loader: any;
 
   ngOnInit() {
@@ -53,49 +53,30 @@ export class EditSchemaComponent implements OnInit {
 
     this.displayErrorText =
       "We ran into a problem and couldn't load your schema. Please try again.";
-    this.links =["Learn more", "Support"];
+    this.links = "https://dataextractor.io/tutorials/";
 
     this.loader = true;
     this.noSchemasAvailable = false;
     this.available_schemas = true;
     this.availableSchemaFailed = false;
 
-    // // For extension
-    // chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
-    //   this.urlLink = tabs[0].url;
-    //   console.log("URL ", this.urlLink);
+    chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
+      this.urlLink = tabs[0].url;
 
-    //   this.jobDetailsService.getAvSchemas(this.urlLink).subscribe(
-    //     (post: any) => {
-    //       let jobStatusId = post;
-    //       let job_id = {
-    //         job_id: jobStatusId.job_id,
-    //       };
-    //       console.log("avg schemas 7", post);
-    //       this.startSchemaJob(job_id);
-    //     },
-    //     (error: any) => {
-    //       console.log("Available Schema Failed");
-    //     }
-    //   );
-    // });
-
-    // // For localhost
-    this.jobDetailsService.getAvSchemas().subscribe(
-      (post: any) => {
-        let jobStatusId = post;
-        let job_id = {
-          job_id: jobStatusId.job_id,
-        };
-        console.log("avg schemas 7", post);
-        this.startSchemaJob(job_id);
-      },
-      (error: any) => {
-        console.log("Available Schema Failed");
-        this.loader = false;
-        this.availableSchemaFailed = true;
-      }
-    );
+      this.jobDetailsService.getAvSchemas(this.urlLink).subscribe(
+        (post: any) => {
+          let jobStatusId = post;
+          let job_id = {
+            job_id: jobStatusId.job_id,
+          };
+          this.startSchemaJob(job_id);
+        },
+        (error: any) => {
+          this.loader = false;
+          this.availableSchemaFailed = true;
+        }
+      );
+    });
   }
 
   startSchemaJob = (job_id) => {
@@ -103,16 +84,13 @@ export class EditSchemaComponent implements OnInit {
       this.jobDetailsService.startSchemaJob(job_id).subscribe(
         (posts: any) => {
           this.schemaData = posts;
-          console.log(this.schemaData, "this.schemaData 1");
 
           if (this.schemaData.status == "SUCCESS") {
             this.loader = false;
             document.getElementById("available_schemas").click();
 
             this.showSchemaObj = this.schemaData.data.schemas;
-            console.log("showSchemaObj", this.showSchemaObj, this.schemaData);
             if (this.showSchemaObj.length == 0) {
-              console.log("Data is not available for this url");
               this.noSchemasAvailable = true;
               this.available_schemas = false;
             } else {
@@ -120,33 +98,20 @@ export class EditSchemaComponent implements OnInit {
               this.showNewSchemaWindow = false;
               this.keys = this.showSchemaObj.columns;
               this.showSchemaData(0);
-              console.log("clear interval called7");
             }
             clearInterval(this.jobInterval);
           } else if (this.schemaData.status == "FAILURE") {
-            console.log("clear interval called failed7");
             this.loader = false;
             clearInterval(this.jobInterval);
           }
         },
         (error: any) => {
           clearInterval(this.jobInterval);
-          console.log("schema status failed");
+          this.loader = false;
+          this.availableSchemaFailed = true;
         }
       );
     }, 1000);
-  };
-
-  showTableCheck = () => {
-    return this.showTable;
-  };
-
-  showLoader = () => {
-    return this.loader;
-  };
-
-  showFRE = () => {
-    return this.noSchemasAvailable;
   };
 
   itemOnHover(index: number) {
@@ -159,7 +124,6 @@ export class EditSchemaComponent implements OnInit {
 
   showSchemaData(index) {
     this.showSchemaObj = this.schemaData.data.schemas[index];
-    console.log("showSchemaObj", this.schemaData.data.schemas[index].schema_id);
     this.showTable = true;
     this.showNewSchemaWindow = false;
     this.keys = this.showSchemaObj.columns;
@@ -176,6 +140,7 @@ export class EditSchemaComponent implements OnInit {
     }
     return isUrlColumn;
   }
+
   createNewSchema() {
     this.showNewSchemaWindow = true;
     this.hideNewSchemaButton = true;
@@ -192,64 +157,18 @@ export class EditSchemaComponent implements OnInit {
   prefPartnersTabActive = false;
   prefCustomersTabActive = false;
   prefStatusTabActive = true;
-  organizaionType = [
-    "System Integrator(SI)",
-    "Managed Services Provider(MSP)",
-    "Independent sofware vendor",
-    "Reseller,Distributor,or Channel Developer",
-  ];
-  countriesOperatedByPartners = [
-    "All",
-    "United States",
-    "Australia",
-    "Canada",
-    "United Kingdom",
-  ];
-  partnersOrgSize = [
-    "1-10",
-    "10-50",
-    "50-250",
-    "250-1000",
-    "1k-5k",
-    "5k-50k",
-    "50k-100k",
-  ];
-  partnerSolAreas = [
-    "All",
-    "Server Migration",
-    "Virtual Desktop",
-    "Businees Applications",
-    "Customer Engagement",
-    "Scalable Business Management",
-    "Unified Operations",
-    "Power Platform",
-    "Modern Workplace",
-    "Unified Endpoint Management",
-    "Security",
-    "Teamwork",
-    "Adoption and Change Management",
-    "Compliance",
-  ];
-  partnerIndustries = [
-    "All",
-    "Analytics",
-    "Education",
-    "Distribution",
-    "Financial Services",
-    "Government",
-    "Health",
-    "Professional Services",
-    "MAnufacturing",
-  ];
+
   onClickingPreferenceHeader = function () {
     this.showPreferenceCardDetails = !this.showPreferenceCardDetails;
   };
+
   onPrefStatusTabClick = function () {
     this.prefMicrosoftTabActive = false;
     this.prefPartnersTabActive = false;
     this.prefCustomersTabActive = false;
     this.prefStatusTabActive = true;
   };
+
   onPrefMicrosoftTabClick = function () {
     this.prefMicrosoftTabActive = true;
     this.prefPartnersTabActive = false;
